@@ -3,11 +3,12 @@
 case $1 in
    config)
         cat <<'EOM'
-graph_title AIN
+graph_title Analog Input
 graph_vlabel value
 ain0.label AIN.0
 ain1.label AIN.1
-graph_args -l 0 --base 1000 --upper-limit 1024
+sum.label SUM
+graph_args -l 0 --base 1000
 graph_scale no
 graph_category GPIO
 EOM
@@ -18,3 +19,5 @@ printf "ain0.value "
 /usr/local/bin/gpio aread 0
 printf "ain1.value "
 /usr/local/bin/gpio aread 1
+printf "sum.value "
+perl -e 'print $ARGV[0]+$ARGV[1],"\n"' `/usr/local/bin/gpio aread 0` `/usr/local/bin/gpio aread 1`

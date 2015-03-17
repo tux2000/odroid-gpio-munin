@@ -1,0 +1,88 @@
+#!/bin/sh
+
+case $1 in
+   config)
+        cat <<'EOM'
+graph_title Digital Input
+graph_vlabel value
+in0.label IN.0
+in1.label IN.1
+in2.label IN.2
+in3.label IN.3
+in4.label IN.4
+in5.label IN.5
+in6.label IN.6
+in7.label IN.7
+in10.label IN.10
+in11.label IN.11
+in12.label IN.12
+in13.label IN.13
+in14.label IN.14
+in21.label IN.21
+in22.label IN.22
+in23.label IN.23
+in24.label IN.24
+in26.label IN.26
+in27.label IN.27
+in0.draw AREA
+in1.draw STACK
+in2.draw STACK
+in3.draw STACK
+in4.draw STACK
+in5.draw STACK
+in6.draw STACK
+in7.draw STACK
+in10.draw STACK
+in11.draw STACK
+in12.draw STACK
+in13.draw STACK
+in14.draw STACK
+in21.draw STACK
+in22.draw STACK
+in23.draw STACK
+in24.draw STACK
+in26.draw STACK
+in27.draw STACK
+graph_category GPIO
+EOM
+        exit 0;;
+esac
+
+printf "in0.value "
+/usr/local/bin/gpio read 0
+printf "in1.value "
+/usr/local/bin/gpio read 1
+printf "in2.value "
+/usr/local/bin/gpio read 2
+printf "in3.value "
+/usr/local/bin/gpio read 3
+printf "in4.value "
+/usr/local/bin/gpio read 4
+printf "in5.value "
+/usr/local/bin/gpio read 5
+printf "in6.value "
+/usr/local/bin/gpio read 6
+printf "in7.value "
+/usr/local/bin/gpio read 7
+printf "in10.value "
+/usr/local/bin/gpio read 10
+printf "in11.value "
+/usr/local/bin/gpio read 11
+printf "in12.value "
+/usr/local/bin/gpio read 12
+printf "in13.value "
+/usr/local/bin/gpio read 13
+printf "in14.value "
+/usr/local/bin/gpio read 14
+printf "in21.value "
+/usr/local/bin/gpio read 21
+printf "in22.value "
+/usr/local/bin/gpio read 22
+printf "in23.value "
+/usr/local/bin/gpio read 23
+printf "in24.value "
+/usr/local/bin/gpio read 24
+printf "in26.value "
+/usr/local/bin/gpio read 26
+printf "in27.value "
+/usr/local/bin/gpio read 27

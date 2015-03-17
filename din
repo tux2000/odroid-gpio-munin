@@ -5,6 +5,7 @@ case $1 in
         cat <<'EOM'
 graph_title Digital Input
 graph_vlabel value
+graph_args -l 0 --base 1000
 in0.label IN.0
 in1.label IN.1
 in2.label IN.2

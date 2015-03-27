@@ -1,0 +1,27 @@
+#!/bin/sh
+
+case $1 in
+   config)
+        cat <<'EOM'
+graph_title Moisture Sensors
+graph_vlabel value
+moi4.label Sensor #4
+moi5.label Sensor #5
+graph_args -l 0 --base 1000
+graph_scale no
+graph_category GPIO
+EOM
+        exit 0;;
+esac
+
+/usr/local/bin/gpio write 4 0
+sleep 0.1
+printf "moi4.value "
+/usr/local/bin/gpio aread 1
+/usr/local/bin/gpio write 4 1
+
+/usr/local/bin/gpio write 5 0
+sleep 0.1
+printf "moi5.value "
+/usr/local/bin/gpio aread 1
+/usr/local/bin/gpio write 5 1

@@ -44,14 +44,14 @@ def print_munin_config(action):
         return
 
     print 'graph_title Temperature Monitoring'
-    print 'graph_args --base 1000 -l 0'
+    print 'graph_args --base 1000'
     print 'graph_vlabel Celsius'
     print 'graph_category temperature'
 
     print 'temperature.label Temperature (C)'
     print 'temperature.type GAUGE'
-    print 'temperature.warning 20:23';
-    print 'temperature.critical 18:25';
+    print 'temperature.warning 20:25';
+    print 'temperature.critical 18:28';
 
 
 def print_temperature_for_munin(temperature):

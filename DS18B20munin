@@ -6,6 +6,7 @@ import time
 import re
 
 DS18B20_ID = "28-031500c850ff"
+DS18B20_ID_soil = "28-031500c981ff"
 DS18B20_TEMP_RE = re.compile(r't=(?P<temperature>[+-]?\d+)', re.M)
 
 
@@ -44,7 +45,6 @@ def print_munin_config(action):
         return
 
     print 'graph_title Temperature Monitoring'
-    print 'graph_args --base 1000'
     print 'graph_vlabel Celsius'
     print 'graph_category temperature'
 
@@ -53,13 +53,22 @@ def print_munin_config(action):
     print 'temperature.warning 20:25';
     print 'temperature.critical 18:28';
 
+    print 'temperaturesoil.label Temperature in soil (C)'
+    print 'temperaturesoil.type GAUGE'
+    print 'temperaturesoil.warning 20:25';
+    print 'temperaturesoil.critical 18:28';
 
-def print_temperature_for_munin(temperature):
+
+
+def print_temperature_for_munin(temperature,temperature_soil):
     """
     Print sensor output
     """
     print 'temperature.value {temp}'.format(
         temp=temperature)
+    print 'temperaturesoil.value {temp}'.format(
+        temp=temperature_soil)
+
 
 
 if __name__ == "__main__":
@@ -67,4 +76,5 @@ if __name__ == "__main__":
         print_munin_config(sys.argv[1])
     else: 
         timestamp, temperature =  get_temperature_from_sensor(DS18B20_ID)
-        print_temperature_for_munin(temperature)
+        timestamp, temperature_soil =  get_temperature_from_sensor(DS18B20_ID_soil)
+        print_temperature_for_munin(temperature,temperature_soil)

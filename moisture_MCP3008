@@ -1,11 +1,11 @@
 #!/usr/bin/python
- 
+
+from __future__ import division 
 import spidev
 import time
 import os
 from subprocess import check_output,call
 import sys
-from __future__ import division
 import re
 
 
@@ -28,6 +28,24 @@ def ReadChannel(channel,trans):
   check_output([gpio, "write", trans,"0"])
   return (data+data2)/2.0
 
+def get_temperature_from_sensor(sensor_name):
+    """
+    Parse output form the sensor
+    """
+    sensor_file = os.path.join(
+        "/sys/bus/w1/devices/",
+        sensor_name,
+        "w1_slave")
+
+    timestamp = int(time.time())
+    with open(sensor_file, 'r') as f:
+        data = f.read()
+
+    found = DS18B20_TEMP_RE.search(data)
+    if found is None:
+        return (timestamp, None)
+    return (timestamp, int(found.group('temperature')) / 1000)
+
 
 if len(sys.argv) == 2 and sys.argv[1] == "config":
   print """graph_title Moisture Sensors
@@ -47,28 +65,12 @@ else:
   sensor0trans = "4"
   sensor0value = ReadChannel(sensor0,sensor0trans)
   sensor1value = ReadChannel(1,"5")
-  sensor0corr = sensor0value*(1/(1 + 0.02*(get_temperature_from_sensor(DS18B20_ID_soil) - 25)))
+  sensor0corr = sensor0value*(1/(1 + 0.02*(get_temperature_from_sensor(DS18B20_ID_soil)[1] - 25)))
   print "moi04.value %d" % (sensor0value,)
-  print "moi05.value %d" % (sensor1value,)
+  #print "moi05.value %d" % (sensor1value,)
   print "moi04c.value %d" % (sensor0corr,)
 
 
-def get_temperature_from_sensor(sensor_name):
-    """
-    Parse output form the sensor
-    """
-    sensor_file = os.path.join(
-        "/sys/bus/w1/devices/",
-        sensor_name,
-        "w1_slave")
 
-    timestamp = int(time.time())
-    with open(sensor_file, 'r') as f:
-        data = f.read()
-
-    found = DS18B20_TEMP_RE.search(data)
-    if found is None:
-        return (timestamp, None)
-    return (timestamp, int(found.group('temperature')) / 1000)
 
 

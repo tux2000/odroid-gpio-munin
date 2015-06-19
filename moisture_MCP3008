@@ -66,9 +66,9 @@ else:
   sensor0value = ReadChannel(sensor0,sensor0trans)
   sensor1value = ReadChannel(1,"5")
   sensor0corr = sensor0value*(1/(1 + 0.02*(get_temperature_from_sensor(DS18B20_ID_soil)[1] - 25)))
-  print "moi04.value %d" % (sensor0value,)
-  #print "moi05.value %d" % (sensor1value,)
-  print "moi04c.value %d" % (sensor0corr,)
+  print "moi04.value %f" % (sensor0value,)
+  #print "moi05.value %f" % (sensor1value,)
+  print "moi04c.value %f" % (sensor0corr,)
 
 
 

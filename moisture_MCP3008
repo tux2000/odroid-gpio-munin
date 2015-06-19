@@ -5,8 +5,15 @@ import time
 import os
 from subprocess import check_output,call
 import sys
+from __future__ import division
+import re
+
 
 gpio="/usr/local/bin/gpio"
+
+DS18B20_ID_soil = "28-031500c981ff"
+DS18B20_TEMP_RE = re.compile(r't=(?P<temperature>[+-]?\d+)', re.M)
+
 
 # Function to read SPI data from MCP3008 chip
 # Channel must be an integer 0-7
@@ -27,6 +34,7 @@ if len(sys.argv) == 2 and sys.argv[1] == "config":
 graph_vlabel value
 moi04.label Sensor #4-#0
 moi05.label Sensor #5-#1
+moi04c.label Sensor #4-#0 temp corrected
 graph_args -l 0 --base 1000
 graph_scale no
 graph_category GPIO"""
@@ -39,5 +47,28 @@ else:
   sensor0trans = "4"
   sensor0value = ReadChannel(sensor0,sensor0trans)
   sensor1value = ReadChannel(1,"5")
+  sensor0corr = sensor0value*(1/(1 + 0.02*(get_temperature_from_sensor(DS18B20_ID_soil) - 25)))
   print "moi04.value %d" % (sensor0value,)
   print "moi05.value %d" % (sensor1value,)
+  print "moi04c.value %d" % (sensor0corr,)
+
+
+def get_temperature_from_sensor(sensor_name):
+    """
+    Parse output form the sensor
+    """
+    sensor_file = os.path.join(
+        "/sys/bus/w1/devices/",
+        sensor_name,
+        "w1_slave")
+
+    timestamp = int(time.time())
+    with open(sensor_file, 'r') as f:
+        data = f.read()
+
+    found = DS18B20_TEMP_RE.search(data)
+    if found is None:
+        return (timestamp, None)
+    return (timestamp, int(found.group('temperature')) / 1000)
+
+

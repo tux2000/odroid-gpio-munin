@@ -51,12 +51,12 @@ def print_munin_config(action):
     print 'temperature.label Temperature (C)'
     print 'temperature.type GAUGE'
     print 'temperature.warning 20:25';
-    print 'temperature.critical 18:28';
+    print 'temperature.critical 10:30';
 
     print 'temperaturesoil.label Temperature in soil (C)'
     print 'temperaturesoil.type GAUGE'
-    print 'temperaturesoil.warning 20:25';
-    print 'temperaturesoil.critical 18:28';
+    print 'temperaturesoil.warning 17:25';
+    print 'temperaturesoil.critical 10:28';
 
 
 

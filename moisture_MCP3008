@@ -12,6 +12,7 @@ import re
 gpio="/usr/local/bin/gpio"
 
 DS18B20_ID_soil = "28-031500c981ff"
+DS18B20_ID_air = "28-031500c850ff"
 DS18B20_TEMP_RE = re.compile(r't=(?P<temperature>[+-]?\d+)', re.M)
 
 
@@ -52,7 +53,9 @@ if len(sys.argv) == 2 and sys.argv[1] == "config":
 graph_vlabel value
 moi04.label Sensor #4-#0
 moi05.label Sensor #5-#1
-moi04c.label Sensor #4-#0 temp corrected
+moi04c.label Sensor #4-#0 soil temp corrected
+moi04d.label Sensor #4-#0 average temp corrected
+moi04a.label Sensor #4-#0 air temp corrected
 graph_args -l 0 --base 1000
 graph_scale no
 graph_category GPIO"""
@@ -66,9 +69,13 @@ else:
   sensor0value = ReadChannel(sensor0,sensor0trans)
   sensor1value = ReadChannel(1,"5")
   sensor0corr = sensor0value*(1/(1 + 0.02*(get_temperature_from_sensor(DS18B20_ID_soil)[1] - 25)))
+  sensor0corrd = sensor0value*(1/(1 + 0.02*((get_temperature_from_sensor(DS18B20_ID_soil)[1]+get_temperature_from_sensor(DS18B20_ID_air)[1])/2 - 25)))
+  sensor0corra = sensor0value*(1/(1 + 0.02*(get_temperature_from_sensor(DS18B20_ID_air)[1] - 25)))
   print "moi04.value %f" % (sensor0value,)
   #print "moi05.value %f" % (sensor1value,)
   print "moi04c.value %f" % (sensor0corr,)
+  print "moi04d.value %f" % (sensor0corrd,)
+  print "moi04a.value %f" % (sensor0corra,)
 
 
 

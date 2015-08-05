@@ -6,7 +6,7 @@ case $1 in
 graph_title Decision tree
 graph_vlabel to water
 dec1.label Random Forest
-dec1.draw AREA
+real.label reality
 graph_args -l 0 --base 1000
 graph_scale no
 graph_category GPIO
@@ -15,5 +15,7 @@ EOM
 esac
 
 printf "dec1.value "
-echo $(Rscript /home/odroid/tinkering/autowater/rscript.R 2>/dev/null| grep "decicion:" | perl -ne 'm/decicion:\s+([01])/; print $1')
+echo $(Rscript /home/odroid/tinkering/autowater/rscript.R 2>/dev/null| grep "decicion:" | perl -ne 'm/decicion:\s+(\d+)/; print $1')
+printf "real.value "
+echo $(Rscript /home/odroid/tinkering/autowater/rscript.R 2>/dev/null| grep "real:" | perl -ne 'm/real:\s+(\d+)/; print $1')
 

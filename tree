@@ -15,7 +15,7 @@ EOM
 esac
 
 printf "dec1.value "
-echo $(Rscript /home/odroid/tinkering/autowater/rscript.R 2>/dev/null| grep "decicion:" | perl -ne 'm/decicion:\s+(\d+)/; print $1')
+echo $(Rscript /home/odroid/tinkering/autowater/rscript.R 2>/dev/null| grep "decicion:" | perl -ne 'm/decicion:\s+(\d+\.?\d*)/; print $1')
 printf "real.value "
 echo $(Rscript /home/odroid/tinkering/autowater/rscript.R 2>/dev/null| grep "real:" | perl -ne 'm/real:\s+(\d+)/; print $1')
 

@@ -8,7 +8,9 @@ graph_vlabel to water
 dec1.label Random Forest
 dec2.label Neural Net
 real.label reality
-graph_args -l 0 --base 1000
+dec11.label Random Forest pasiflora
+real10.label reality pasiflora
+graph_args --base 1000
 graph_scale no
 graph_category GPIO
 EOM
@@ -21,4 +23,8 @@ echo $(Rscript /home/odroid/tinkering/autowater/rscript.R 2>/dev/null| grep "dec
 #echo $(Rscript /home/odroid/tinkering/autowater/rscript.R 2>/dev/null| grep "neural:" | perl -ne 'm/neural:\s+(\d+\.?\d*)/; print $1')
 printf "real.value "
 echo $(Rscript /home/odroid/tinkering/autowater/rscript.R 2>/dev/null| grep "real:" | perl -ne 'm/real:\s+(\d+\.?\d*)/; print $1')
+printf "dec11.value "
+echo $(Rscript /home/odroid/tinkering/autowater/rscript2.R 2>/dev/null| grep "decicion:" | perl -ne 'm/decicion:\s+(\d+\.?\d*)/; print $1')
+printf "real10.value "
+echo $(Rscript /home/odroid/tinkering/autowater/rscript2.R 2>/dev/null| grep "real:" | perl -ne 'm/real:\s+(\d+\.?\d*)/; print $1')
 

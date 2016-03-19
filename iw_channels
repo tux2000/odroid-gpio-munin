@@ -1,0 +1,28 @@
+#!/bin/sh
+
+case $1 in
+   config)
+        cat <<'EOM'
+graph_title Wifi Channel Occupation
+graph_vlabel value
+channel1.label Channel 1
+channel2.label Channel 2
+channel3.label Channel 3
+channel4.label Channel 4
+channel5.label Channel 5
+channel6.label Channel 6
+channel7.label Channel 7
+channel8.label Channel 8
+channel9.label Channel 9
+channel10.label Channel 10
+channel11.label Channel 11
+channel12.label Channel 12
+channel13.label Channel 13
+graph_args -l 0 --base 1000
+graph_scale no
+graph_category network
+EOM
+        exit 0;;
+esac
+
+iwlist wlan0 scan | perl -ne 'if(m/(Channel \d+)/){print "$1\n";}' | sort | uniq -c | sort -n | perl -ne 'm/(\d+) Channel (\d+)/; print "channel$2.value $1\n";'

@@ -4,6 +4,11 @@ import os
 import sys
 import time
 import re
+import datetime
+import math
+import urllib2
+import subprocess
+
 
 DS18B20_ID = "28-031500c850ff"
 DS18B20_ID_soil = "28-031500c981ff"
@@ -55,8 +60,12 @@ def print_munin_config(action):
 
     print 'temperaturesoil.label Temperature in soil (C)'
     print 'temperaturesoil.type GAUGE'
-    print 'temperaturesoil.warning 17:25';
-    print 'temperaturesoil.critical 10:28';
+    print 'temperaturesoil.warning 25:27';
+    print 'temperaturesoil.critical 23:28';
+
+    print 'targett.label Target Temperature (C)'
+    print 'targett.type GAUGE'
+
 
 
 
@@ -68,6 +77,13 @@ def print_temperature_for_munin(temperature,temperature_soil):
         temp=temperature)
     print 'temperaturesoil.value {temp}'.format(
         temp=temperature_soil)
+    response = urllib2.urlopen('http://www.temperatur.nu/termo/uppsala/temp.txt')
+    outsideT = float(response.read())
+    now = datetime.datetime.now().minute/60.0 + datetime.datetime.now().hour
+    #targett = 1.5*math.sin((now+10)/(math.pi*1.2))+25.5
+    #targett = 1*math.sin((now+10)/(math.pi*1.2))+26+2/(1+math.exp(-0.25*(outsideT-10)))-1
+    targett = float(subprocess.check_output(["python","/media/extern/code/fishheizung/switchheater.py","-t"]))
+    print 'targett.value {temp}'.format(temp=targett)
 
 
 
